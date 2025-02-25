@@ -9,7 +9,6 @@ from torchvision.transforms import ToTensor
 
 # XLA imports
 import torch_xla.core.xla_model as xm
-import torch_xla.runtime as xr
 
 # XLA imports for parallel loader and multi-processing
 import torch_xla.distributed.parallel_loader as pl
@@ -46,7 +45,7 @@ def main():
     # Prepare data loader
     train_sampler = None
     if world_size > 1:
-        if xr.global_ordinal() == 0:
+        if xm.get_ordinal() == 0:
             print(f'{world_size=}')
         train_sampler = DistributedSampler(train_dataset,
                                            num_replicas=world_size,
