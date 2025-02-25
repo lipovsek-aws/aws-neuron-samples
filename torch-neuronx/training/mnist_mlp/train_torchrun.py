@@ -45,6 +45,8 @@ def main():
     # Prepare data loader
     train_sampler = None
     if world_size > 1:
+        if xm.global_ordinal() == 0:
+            print(f'{world_size=}')
         train_sampler = DistributedSampler(train_dataset,
                                            num_replicas=world_size,
                                            rank=xm.get_ordinal(),
